@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>PeakFoods payment test</title>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<style>body{font-family:system-ui,sans-serif;max-width:420px;margin:30px auto;padding:0 14px}input,button,select{width:100%;padding:10px;margin:5px 0;border-radius:8px;border:1px solid #ccc;font:inherit}button{background:#f2a100;border:0;font-weight:700}pre{white-space:pre-wrap;background:#f4f4f4;padding:8px;border-radius:8px}</style></head><body>
+<h3>PeakFoods payment test</h3><p>Shows how a frontend calls the API and opens Razorpay Checkout.</p>
+<input id="em" placeholder="Email"><input id="pw" type="password" placeholder="Password"><button onclick="login()">1. Log in</button>
+<input id="dish" placeholder="Dish id (see /api/menu)" value="1"><input id="qty" type="number" value="1"><input id="ad" placeholder="Delivery address"><input id="ph" placeholder="Phone">
+<select id="mt"><option value="online">Pay online (Razorpay)</option><option value="cod">Cash on delivery</option></select><button onclick="order()">2. Place order</button><pre id="o"></pre>
+<script>
+let T='';const log=x=>o.textContent=typeof x==='string'?x:JSON.stringify(x,null,2);
+const api=(u,b,t)=>fetch(u,{method:'POST',headers:{'Content-Type':'application/json',...(T?{Authorization:'Bearer '+T}:{})},body:JSON.stringify(b)}).then(async r=>({ok:r.ok,d:await r.json()}));
+async function login(){const r=await api('/api/auth/login',{email:em.value,password:pw.value});if(r.ok)T=r.d.token;log(r.ok?'Logged in as '+r.d.user.name:r.d.error)}
+async function order(){const r=await api('/api/orders',{items:[{id:+dish.value,qty:+qty.value}],address:ad.value,phone:ph.value,method:mt.value});
+ if(!r.ok)return log(r.d.error);if(!r.d.razorpay)return log('Order placed (cash on delivery): #'+r.d.orderId);
+ const z=r.d.razorpay;new Razorpay({key:z.key,amount:z.amount,currency:z.currency,order_id:z.orderId,name:'PeakFoods',
+  handler:async res=>{const v=await api('/api/payments/verify',res);log(v.ok?'Payment verified. Order #'+r.d.orderId+' is paid.':v.d.error)}}).open()}
+</script></body></html>

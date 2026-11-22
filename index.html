@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>PeakFoods</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap">
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--tx:#10213a;--mut:#5d6b80;--pr:#f2a100;--pt:#10213a;--bd:#dde4ee;--ok:#1f9d63;--bad:#d64545;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme=light]){--bg:#0c1626;--card:#14233a;--tx:#eef3fa;--mut:#9fb0c7;--bd:#25375a;--pt:#10213a}}
+:root[data-theme=dark]{--bg:#0c1626;--card:#14233a;--tx:#eef3fa;--mut:#9fb0c7;--bd:#25375a}
+*{box-sizing:border-box}html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.45 "Bricolage Grotesque",system-ui,sans-serif;min-height:100vh}
+header{background:var(--pt);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;gap:8px;position:sticky;top:0;z-index:5}
+.logo{font-weight:800;font-size:20px;letter-spacing:-.5px}.logo b{color:var(--pr)}
+nav{display:flex;gap:6px;overflow-x:auto;padding:10px 12px;background:var(--card);border-bottom:1px solid var(--bd)}
+nav button{white-space:nowrap}
+main{max-width:860px;margin:0 auto;padding:14px}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;border:1px solid var(--bd);background:var(--card);border-radius:10px;padding:8px 12px}
+button.p{background:var(--pr);border-color:var(--pr);color:#10213a;font-weight:600}
+button.on{background:var(--pt);color:#fff;border-color:var(--pt)}
+button.d{color:var(--bad)}
+input,select,textarea{width:100%;padding:9px 10px;border:1px solid var(--bd);border-radius:10px;background:var(--card);margin:4px 0 10px}
+label{font-size:13px;color:var(--mut)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:12px;margin-bottom:10px}
+.row{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px}
+.em{font-size:34px}.mut{color:var(--mut);font-size:13px}.pr{font-weight:800}
+.tag{display:inline-block;padding:2px 9px;border-radius:99px;background:var(--bg);border:1px solid var(--bd);font-size:12px}
+.tag.g{color:var(--ok);border-color:var(--ok)}.tag.r{color:var(--bad);border-color:var(--bad)}
+.hero{background:var(--pt);color:#fff;border-radius:16px;padding:18px;margin-bottom:12px}
+.hero h1{margin:0 0 4px;font-size:28px;letter-spacing:-1px}.hero p{margin:0;color:#c3d0e4}
+.bell{position:relative}.bell i{position:absolute;top:-6px;right:-8px;background:var(--bad);color:#fff;font-style:normal;font-size:11px;border-radius:99px;padding:0 6px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(16px + env(safe-area-inset-bottom,0px));background:var(--pt);color:#fff;padding:10px 16px;border-radius:12px;display:none;z-index:9;max-width:90%;border:1px solid var(--pr)}
+.auth{max-width:380px;margin:8vh auto}
+h3{margin:14px 0 8px}
+@keyframes up{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes pop{from{opacity:0;transform:scale(.9) translateY(14px)}to{opacity:1;transform:none}}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+@keyframes grad{0%{background-position:0 50%}50%{background-position:100% 50%}100%{background-position:0 50%}}
+@keyframes bob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-7px) rotate(-6deg)}}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.25)}}
+.hero{background:linear-gradient(120deg,#10213a,#1d3b6b,#10213a,#7a4b00);background-size:300% 300%;animation:grad 14s ease infinite,up .6s ease both;box-shadow:0 12px 30px rgba(16,33,58,.25)}
+.hero h1{font-size:32px;animation:up .7s .1s ease both}.hero p{animation:up .7s .25s ease both}
+button{transition:transform .15s,filter .2s,background .2s,box-shadow .2s}
+button:hover{filter:brightness(1.07);transform:translateY(-1px)}button:active{transform:scale(.94)}
+button.p:hover{box-shadow:0 6px 16px rgba(242,161,0,.4)}
+.card{transition:transform .2s,box-shadow .25s,border-color .2s}
+.grid .card:hover{transform:translateY(-5px);box-shadow:0 14px 28px rgba(16,33,58,.2);border-color:var(--pr)}
+.grid .card:hover .em{display:inline-block;animation:bob .9s ease infinite}
+.grid.in .card{animation:up .5s ease both}
+.grid.in .card:nth-child(2){animation-delay:.05s}.grid.in .card:nth-child(3){animation-delay:.1s}.grid.in .card:nth-child(4){animation-delay:.15s}.grid.in .card:nth-child(5){animation-delay:.2s}.grid.in .card:nth-child(6){animation-delay:.25s}.grid.in .card:nth-child(n+7){animation-delay:.3s}
+.bell i{animation:pulse 1.4s ease infinite}
+.logo{transition:transform .3s}.logo:hover{transform:scale(1.06) rotate(-2deg)}
+nav button.on{box-shadow:0 4px 12px rgba(16,33,58,.3)}
+.ov{position:fixed;inset:0;background:rgba(8,16,30,.62);backdrop-filter:blur(5px);display:flex;align-items:center;justify-content:center;padding:16px;z-index:20;animation:fade .25s ease}
+.ov .auth{width:100%;margin:0;padding:18px;animation:pop .4s cubic-bezier(.2,.9,.3,1.2)}
+#toast{animation:pop .3s ease}
+.ph{height:140px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#1d3b6b,#f2a100);position:relative;overflow:hidden}
+.ph img{width:100%;height:100%;object-fit:cover;transition:transform .5s}.ph .em{font-size:58px}
+.dish:hover .ph img{transform:scale(1.08)}.dish{padding:0;overflow:hidden}.dt{padding:12px}
+.ofb{position:absolute;top:8px;left:8px;background:var(--bad);color:#fff;border-radius:99px;padding:2px 10px;font-size:12px;font-weight:600}
+.offbar{background:var(--pr);color:#10213a;overflow:hidden;white-space:nowrap;cursor:pointer;font-weight:600}
+.offbar span{display:inline-block;padding:9px 0 9px 100%;animation:mq 22s linear infinite}
+@keyframes mq{to{transform:translateX(-100%)}}
+button{position:relative;overflow:hidden;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.bell,.fab{overflow:visible}
+.rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);animation:rip .6s ease-out forwards;pointer-events:none}
+button.p .rip{background:rgba(16,33,58,.28)}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+button.p::after{content:'';position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,.6),transparent);transform:skewX(-20deg);pointer-events:none}
+button.p:hover::after{animation:shine .8s ease}
+@keyframes shine{from{left:-60%}to{left:130%}}
+.card:active{transform:scale(.985)}
+.bell:hover{animation:ring .7s ease}
+@keyframes ring{0%,100%{transform:rotate(0)}20%{transform:rotate(16deg)}40%{transform:rotate(-14deg)}60%{transform:rotate(9deg)}80%{transform:rotate(-5deg)}}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes fabpop{0%{transform:scale(1)}40%{transform:scale(1.35) rotate(-14deg)}100%{transform:scale(1)}}
+.fab{position:fixed;right:16px;bottom:calc(18px + env(safe-area-inset-bottom,0px));width:auto;height:50px;border-radius:99px;padding:0 24px;font-size:16px;font-weight:600;background:var(--pr);border:0;box-shadow:0 10px 24px rgba(16,33,58,.4);z-index:8;animation:pop .5s cubic-bezier(.2,.9,.3,1.3) both,float 3s ease-in-out 1s infinite}
+.fab:hover{filter:none;box-shadow:0 14px 30px rgba(242,161,0,.55)}.fab:active{transform:scale(.88)}
+.fab.pop{animation:fabpop .45s ease,float 3s ease-in-out .5s infinite}
+.fab i{position:absolute;top:-4px;right:-4px;min-width:23px;height:23px;border-radius:99px;background:var(--pt);color:#fff;font-style:normal;font-size:12px;font-weight:600;line-height:23px;text-align:center;border:2px solid var(--pr)}
+.fly{position:fixed;z-index:30;font-size:26px;pointer-events:none;margin:-13px 0 0 -13px;transition:transform .65s cubic-bezier(.5,-.25,.8,.6),opacity .65s}
+nav button,.row button,.row a button{flex-shrink:0}
+main{padding-bottom:110px}
+.ds{font-size:13px;color:var(--mut);margin:4px 0;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.lk{font-size:13px;color:var(--tx);text-decoration:underline;font-weight:600}
+.st{border:0;background:none;font-size:32px;padding:2px 5px;color:var(--bd);overflow:visible}.st.lit{color:var(--pr);transform:scale(1.1)}
+.top{display:flex;gap:10px;overflow-x:auto;padding-bottom:8px;margin-bottom:6px}.tp{min-width:150px;flex:0 0 auto;cursor:pointer}
+.lb{padding:2px 10px;font-size:13px;border-radius:99px;margin-left:6px}.lb.mine{color:var(--bad);border-color:var(--bad)}.lb.off{opacity:.55}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.offbar span{padding-left:12px}}
+</style></head><body>
+<div id="app"></div><div id="modal"></div><div id="toast"></div>
+<script>
+const DB={};
+function get(k,d){if(!(k in DB))DB[k]=d;return DB[k]}
+function save(){}
+let TOKEN='';try{TOKEN=localStorage.getItem('pf_token')||''}catch(e){}
+function setToken(t){TOKEN=t;try{t?localStorage.setItem('pf_token',t):localStorage.removeItem('pf_token')}catch(e){}}
+async function api(path,method,body){
+ const r=await fetch('/api'+path,{method:method||'GET',headers:{'Content-Type':'application/json',...(TOKEN?{Authorization:'Bearer '+TOKEN}:{})},body:body?JSON.stringify(body):undefined});
+ let d={};try{d=await r.json()}catch(e){}
+ if(!r.ok){if(r.status===401&&TOKEN){setToken('');cur=null;render()}throw new Error(d.error||'Request failed')}
+ return d}
+const $=s=>document.querySelector(s);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+const BR=[{n:'Banjara Hills',a:'Road No. 12, Banjara Hills',la:17.4156,ln:78.4347},{n:'Hitech City',a:'Madhapur Main Road',la:17.4435,ln:78.3772},
+{n:'Secunderabad',a:'SD Road, Secunderabad',la:17.4399,ln:78.4983},{n:'Gachibowli',a:'Financial District Road',la:17.4401,ln:78.3489}];
+const ST=['Placed','Preparing','Out for delivery','Delivered','Cancelled'];
+const users=()=>get('pf_users',[]);
+const menu=()=>get('pf_menu',[]),orders=()=>get('pf_orders',[]),books=()=>get('pf_book',[]),notes=()=>get('pf_notes',[]);
+let cur=null;
+let tab='menu',cat='All',q='',mode='in',cart={},loc=null,atab='orders',err='';
+const nid=a=>a.reduce((m,x)=>Math.max(m,x.id),0)+1;
+const menus=()=>get('pf_menus',['Starters','Mains','Breads','Desserts','Drinks']),offers=()=>get('pf_offers',[]);
+const offerOf=id=>offers().find(o=>o.on&&o.ids.includes(id));
+const price=m=>{const o=offerOf(m.id);return o?Math.round(m.p*(100-o.pct)/100):m.p};
+const priceTag=m=>offerOf(m.id)?`<s class="mut">₹${m.p}</s> ₹${price(m)}`:`₹${m.p}`;
+const offBar=()=>{const a=offers().filter(o=>o.on);return a.length?`<div class="offbar" onclick="setTab('offers')"><span>🔥 ${a.map(o=>esc(o.title)+' - '+o.pct+'% off').join(' &nbsp;•&nbsp; ')} &nbsp;•&nbsp; Tap to see all offers</span></div>`:''};
+
+function vOffers(){const a=offers().filter(o=>o.on);
+ $('#v').innerHTML='<h3 style="margin-top:0">Special offers</h3>'+(a.length?a.map(o=>`<div class="card"><div class="row"><b>🔥 ${esc(o.title)}</b><span class="tag g">${o.pct}% off</span></div><p class="mut">${esc(o.desc)}</p><div class="grid in">${o.ids.map(id=>menu().find(m=>m.id===id)).filter(Boolean).map(m=>`<div class="card dish"><div class="ph">${m.img?`<img src="${m.img}" alt="${esc(m.n)}">`:`<span class="em">${m.e}</span>`}<span class="ofb">${o.pct}% off</span></div><div class="dt"><b>${esc(m.n)}</b><div class="row" style="margin-top:8px"><span class="pr">${priceTag(m)}</span><button class="p" onclick="chg(${m.id},1)">Add</button></div></div></div>`).join('')}</div></div>`).join(''):'<p class="mut">No special offers right now. Check back soon.</p>')}
+function addOffer(){const t=$('#ot').value.trim(),pc=+$('#op').value,ids=[...document.querySelectorAll('.oc:checked')].map(x=>+x.value);
+ if(!t||!pc||pc>90||!ids.length)return toast('Add a title, a discount (1-90%) and at least one dish.');
+ act(()=>api('/admin/offers','POST',{title:t,descr:$('#od').value.trim(),pct:pc,dishIds:ids}),'Offer is live. Customers notified by app and email.')}
+function togOffer(id){act(()=>api('/admin/offers/'+id+'/toggle','PATCH'))}
+function delOffer(id){act(()=>api('/admin/offers/'+id,'DELETE'))}
+function addMenu(){const n=$('#nmn').value.replace(/['"<>]/g,'').trim();if(!n)return toast('Enter a menu name.');act(()=>api('/admin/menus','POST',{name:n}),'Menu created')}
+function delMenu(n){const m=(DB.pf_menuObj||[]).find(x=>x.name===n);if(!m)return;if(cat===n)cat='All';act(()=>api('/admin/menus/'+m.id,'DELETE'),'Menu deleted')}
+function addDish(){const f=$('#mi').files[0];if(!f)return addDishBase('');const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,500/im.width),c=document.createElement('canvas');c.width=im.width*k;c.height=im.height*k;c.getContext('2d').drawImage(im,0,0,c.width,c.height);addDishBase(c.toDataURL('image/jpeg',.7))};im.onerror=()=>addDishBase('');im.src=r.result};r.readAsDataURL(f)}
+function toast(m){const t=$('#toast');t.textContent=m;t.style.display='block';clearTimeout(toast.h);toast.h=setTimeout(()=>t.style.display='none',3200)}
+const act=async(fn,ok)=>{try{await fn();await load();render();if(ok)toast(ok)}catch(e){toast(e.message)}};
+async function refresh(t){await load();if(t)tab=t;render()}
+async function load(){
+ const adm=!!cur&&cur.role==='admin',P=[api('/menu'),api(adm?'/admin/offers':'/offers'),api('/reviews'),api('/top')];
+ if(cur){P.push(api('/orders'),api('/bookings'),api('/notifications'),api('/likes/mine'));if(adm)P.push(api('/admin/users'),api('/admin/dishes'))}
+ const X=await Promise.all(P);
+ const dish=d=>({id:d.id,n:d.name,c:d.menu,p:d.price,e:d.emoji,img:d.img,d:d.descr,i:d.ingredients,h:d.method,a:d.active,likes:d.likes||0});
+ DB.pf_menuObj=X[0].menus;DB.pf_menus=X[0].menus.map(m=>m.name);
+ DB.pf_menu=(adm?X[9]:X[0].dishes).map(dish);
+ DB.pf_offers=X[1].map(o=>({id:o.id,title:o.title,desc:o.descr,pct:o.pct,ids:o.dishes.map(d=>d.id),on:!!o.active}));
+ DB.pf_reviews=X[2].map(x=>({id:x.id,name:x.name,br:x.branch,f:x.food,s:x.service,note:x.note,t:x.created*1000}));
+ DB.pf_top=X[3];
+ if(cur){
+  DB.pf_orders=X[4].map(o=>({id:o.id,uid:o.user_id,name:o.customer||cur.name,items:o.items.map(i=>({n:i.name,q:i.qty,p:i.price})),total:o.total,addr:o.address,ph:o.phone,br:o.branch,st:o.status,t:o.created*1000,pay:o.pay_status,m:o.method}));
+  DB.pf_book=X[5].map(b=>({id:b.id,uid:b.user_id,name:b.customer||cur.name,br:b.branch,date:b.date,time:b.time,g:b.guests,note:b.note,st:b.status,done:!!b.done,rv:!!b.reviewed}));
+  DB.pf_notes=X[6].map(n=>({id:n.id,uid:cur.id,msg:n.msg,t:n.created*1000,read:!!n.read}));
+  DB.pf_mylikes=X[7];DB.pf_users=adm?X[8]:[];
+ }else{DB.pf_orders=[];DB.pf_book=[];DB.pf_notes=[];DB.pf_mylikes=[];DB.pf_users=[]}
+}
+function loadRzp(){return window.Razorpay?Promise.resolve():new Promise((ok,no)=>{const s=document.createElement('script');s.src='https://checkout.razorpay.com/v1/checkout.js';s.onload=ok;s.onerror=()=>no(new Error('Could not load Razorpay'));document.head.appendChild(s)})}
+async function pay(z){await loadRzp();return new Promise((ok,no)=>{new Razorpay({key:z.key,amount:z.amount,currency:z.currency,order_id:z.orderId,name:'PeakFoods',prefill:{name:cur.name,email:cur.email,contact:(document.querySelector('#ph')||{}).value||''},theme:{color:'#f2a100'},
+ handler:async r=>{try{await api('/payments/verify','POST',r);ok()}catch(e){no(e)}},modal:{ondismiss:()=>no(new Error('Payment cancelled'))}}).open()})}
+async function payAgain(id){try{const r=await api('/orders/'+id+'/pay','POST');await pay(r.razorpay);await refresh();toast('Payment successful')}catch(e){toast(e.message)}}
+const mine=()=>notes().filter(n=>n.uid===cur.id||n.uid==='all').sort((a,b)=>b.t-a.t);
+const unread=()=>mine().filter(n=>!n.read).length;
+const fmt=t=>new Date(t).toLocaleString([], {day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
+const dist=(a,b,c,d)=>{const r=x=>x*Math.PI/180,h=Math.sin(r(c-a)/2)**2+Math.cos(r(a))*Math.cos(r(c))*Math.sin(r(d-b)/2)**2;return 12742*Math.asin(Math.sqrt(h))};
+const brs=()=>BR.map(b=>({...b,d:loc?dist(loc.la,loc.ln,b.la,b.ln):null})).sort((a,b)=>(a.d??0)-(b.d??0));
+const cartTotal=()=>Object.entries(cart).reduce((s,[id,n])=>s+(m=>m?price(m):0)(menu().find(x=>x.id==id))*n,0);
+const cartCount=()=>Object.values(cart).reduce((s,n)=>s+n,0);
+
+async function login(){const em=$('#em').value.trim().toLowerCase(),pw=$('#pw').value;
+ try{
+  if(mode==='up'){const nm=$('#nm').value.trim();if(!nm||!em||pw.length<8){err='Enter a name, email and a password of 8+ characters.';return drawAuth()}
+   const r=await api('/auth/register','POST',{name:nm,email:em,password:pw});setToken(r.token);cur=r.user}
+  else{const r=await api('/auth/login','POST',{email:em,password:pw});setToken(r.token);cur=r.user}
+  await load();err='';$('#modal').innerHTML='';render();toast('Welcome, '+cur.name);if(pending){const f=pending;pending=null;f()}
+ }catch(e){err=e.message;drawAuth()}}
+function logout(){cur=null;setToken('');tab='menu';cart={};load().then(render).catch(render)}
+async function forgot(){const em=($('#em')||{}).value;if(!em||!em.trim())return toast('Type your email above, then tap Forgot password.');
+ try{await api('/auth/forgot','POST',{email:em.trim()});closeAuth();toast('If that email is registered, a reset link has been sent.')}catch(e){toast(e.message)}}
+let pending=null,fresh=0;const LOCK=['cart','book','orders','alerts','admin'];
+function gate(fn){pending=fn;openAuth('in')}
+function setTab(t){if(!cur&&LOCK.includes(t))return gate(()=>setTab(t));tab=t;render()}
+function openAuth(m){mode=m;err='';drawAuth()}
+function closeAuth(){$('#modal').innerHTML='';pending=null;err=''}
+function drawAuth(){$('#modal').innerHTML=`<div class="ov" onclick="if(event.target===this)closeAuth()"><div class="auth card"><div class="row"><div class="logo">Peak<b>Foods</b></div><button onclick="closeAuth()">✕</button></div>
+<p class="mut">${mode==='in'?'Log in to continue.':'Create an account to order and book.'}</p>${err?`<p class="tag r">${esc(err)}</p>`:''}
+${mode==='up'?'<label>Name</label><input id="nm" autocomplete="name">':''}<label>Email</label><input id="em" type="email" autocomplete="email"><label>Password</label><input id="pw" type="password" autocomplete="current-password" onkeydown="if(event.key==='Enter')login()">
+<button class="p" style="width:100%" onclick="login()">${mode==='in'?'Log in':'Sign up'}</button>
+<p class="mut" style="text-align:center"><a href="#" onclick="openAuth('${mode==='in'?'up':'in'}');return false">${mode==='in'?'New here? Create an account':'Have an account? Log in'}</a></p>${mode==='in'?'<p class="mut" style="text-align:center"><a href="#" onclick="forgot();return false">Forgot password?</a></p>':''}</div></div>`}
+
+function render(){
+ if(0){$('#app').innerHTML=`<div class="auth"><div class="hero"><div class="logo" style="font-size:30px">Peak<b>Foods</b></div><p>Order delivery, book a table, find a branch near you.</p></div>
+ <div class="card"><h3 style="margin-top:0">${mode==='in'?'Log in':'Create account'}</h3>
+ ${err?`<p class="tag r">${esc(err)}</p>`:''}
+ ${mode==='up'?'<label>Name</label><input id="nm" autocomplete="name">':''}
+ <label>Email</label><input id="em" type="email" autocomplete="email"><label>Password</label><input id="pw" type="password" autocomplete="current-password">
+ <button class="p" style="width:100%" onclick="login()">${mode==='in'?'Log in':'Sign up'}</button>
+ <p class="mut" style="text-align:center"><a href="#" onclick="mode='${mode==='in'?'up':'in'}';err='';render();return false">${mode==='in'?'New here? Create an account':'Have an account? Log in'}</a></p>
+ <p class="mut">Demo admin: admin@peakfoods.com / admin123</p></div></div>`;return}
+ const tabs=[['menu','Menu'],['offers','Offers'],['cart','Cart'+(cartCount()?' ('+cartCount()+')':'')],['book','Book a table'],['near','Near me'],['reviews','Reviews'],['orders','My orders'],...(cur&&cur.role==='admin'?[['admin','Admin']]:[])];
+ $('#app').innerHTML=`${offBar()}<header><div class="logo">Peak<b>Foods</b></div><div class="row" style="gap:8px;justify-content:flex-end">
+ ${cur?`<button class="bell" onclick="setTab('alerts')">🔔${unread()?`<i>${unread()}</i>`:''}</button><span class="mut" style="color:#c3d0e4">${esc(cur.name)}${cur.role==='admin'?' (admin)':''}</span><button onclick="logout()">Log out</button>`:`<button onclick="openAuth('in')">Log in</button><button class="p" onclick="openAuth('up')">Sign up</button>`}</div></header>
+ <nav>${tabs.map(t=>`<button class="${tab===t[0]?'on':''}" onclick="setTab('${t[0]}')">${t[1]}</button>`).join('')}</nav><main id="v"></main><button class="fab" onclick="setTab('cart')" aria-label="View cart">View cart<i id="fabn">${cartCount()}</i></button>`;
+ ({menu:vMenu,offers:vOffers,reviews:vReviews,cart:vCart,book:vBook,near:vNear,orders:vOrders,alerts:vAlerts,admin:vAdmin})[tab]();setTimeout(checkReview,600);
+}
+
+function vMenu(){const cats=['All',...menus()];
+ $('#v').innerHTML=`<div class="hero"><h1>Hungry? Reach the peak.</h1><p>Browse the menu, order delivery and book a table.</p>${cur?'':`<div class="row" style="justify-content:flex-start;margin-top:14px"><button class="p" onclick="openAuth('up')">Sign up to order</button><button onclick="openAuth('in')">Log in</button></div>`}</div>
+ ${topRow()}<input id="s" placeholder="Search dishes" value="${esc(q)}" oninput="q=this.value;drawMenu()">
+ <div class="row" style="justify-content:flex-start;margin-bottom:10px;overflow-x:auto;flex-wrap:nowrap">${cats.map(c=>`<button class="${cat===c?'on':''}" onclick="cat='${c}';render()">${c}</button>`).join('')}</div><div id="ml" class="grid"></div>`;fresh=1;drawMenu();fresh=0}
+function drawMenu(){$('#ml').className='grid'+(fresh?' in':'');const l=menu().filter(m=>m.a&&(cat==='All'||m.c===cat)&&m.n.toLowerCase().includes(q.toLowerCase()));
+ $('#ml').innerHTML=l.length?l.map(m=>`<div class="card dish"><div class="ph">${m.img?`<img src="${m.img}" alt="${esc(m.n)}">`:`<span class="em">${m.e}</span>`}${offerOf(m.id)?`<span class="ofb">${offerOf(m.id).pct}% off</span>`:''}</div><div class="dt"><b>${esc(m.n)}</b><div class="mut">${esc(m.c)}</div><div class="ds">${esc(info(m).d||'')}</div><a href="#" class="lk" onclick="showDish(${m.id});return false">Ingredients and recipe</a> <button class="lb ${liked(m.id)?'mine':''} ${canLike()?'':'off'}" onclick="like(${m.id})">❤ ${likeN(m.id)}</button>
+ <div class="row" style="margin-top:8px"><span class="pr">${priceTag(m)}</span><span>${cart[m.id]?`<button onclick="chg(${m.id},-1)">−</button> ${cart[m.id]} `:''}<button class="p" onclick="chg(${m.id},1)">${cart[m.id]?'+':'Add'}</button></span></div></div></div>`).join(''):'<p class="mut">No dishes match. Try another search or category.</p>'}
+function chg(id,d){if(!cur)return gate(()=>chg(id,d));cart[id]=(cart[id]||0)+d;if(cart[id]<=0)delete cart[id];tab==='cart'?render():(tab==='menu'&&drawMenu(),renderBadge(),d>0&&(toast('Added to cart'),fly()))}
+function renderBadge(){const b=document.querySelectorAll('nav button')[2];bump();if(b)b.textContent='Cart'+(cartCount()?' ('+cartCount()+')':'')}
+
+function vCart(){const ids=Object.keys(cart);
+ if(!ids.length){$('#v').innerHTML='<div class="card"><b>Your cart is empty.</b><p class="mut">Add dishes from the menu to order delivery.</p><button class="p" onclick="setTab(\'menu\')">Browse menu</button></div>';return}
+ const t=cartTotal();
+ $('#v').innerHTML=`<h3 style="margin-top:0">Your delivery order</h3>`+ids.map(id=>{const m=menu().find(x=>x.id==id);return`<div class="card row"><span>${m.e} <b>${esc(m.n)}</b><br><span class="mut">₹${price(m)} each</span></span><span><button onclick="chg(${m.id},-1)">−</button> ${cart[id]} <button onclick="chg(${m.id},1)">+</button></span></div>`}).join('')+
+ `<div class="card"><div class="row"><span>Subtotal</span><b>₹${t}</b></div><div class="row"><span>Delivery fee</span><b>₹30</b></div><div class="row"><span>Total</span><b>₹${t+30}</b></div></div>
+ <div class="card"><label>Deliver from branch</label><select id="ob">${brs().map(b=>`<option>${b.n}${b.d!=null?' ('+b.d.toFixed(1)+' km)':''}</option>`).join('')}</select>
+ <label>Delivery address</label><textarea id="ad" rows="2"></textarea><label>Phone</label><input id="ph" type="tel">
+ <label>Payment</label><select id="pm"><option value="online">Pay online (UPI, card, netbanking)</option><option value="cod">Cash on delivery</option></select><button class="p" style="width:100%" onclick="place()">Place order · ₹${t+30}</button></div>`}
+async function place(){const ad=$('#ad').value.trim(),ph=$('#ph').value.trim();if(!ad||ph.length<8)return toast('Add a delivery address and phone number.');
+ try{const r=await api('/orders','POST',{items:Object.entries(cart).map(([id,q])=>({id:+id,qty:q})),address:ad,phone:ph,branch:$('#ob').value.split(' (')[0],method:$('#pm').value});
+  cart={};
+  if(r.razorpay){try{await pay(r.razorpay)}catch(e){await refresh('orders');return toast(e.message+'. You can pay later from My orders.')}}
+  await refresh('orders');toast(r.razorpay?'Payment successful. Order placed.':'Order placed')
+ }catch(e){toast(e.message)}}
+function vBook(){const today=new Date().toISOString().slice(0,10);
+ $('#v').innerHTML=`<div class="card"><h3 style="margin-top:0">Book a table</h3><label>Branch</label><select id="bb">${BR.map(b=>`<option>${b.n}</option>`).join('')}</select>
+ <div class="row" style="align-items:flex-start"><div style="flex:1"><label>Date</label><input id="bd" type="date" min="${today}" value="${today}"></div>
+ <div style="flex:1"><label>Time</label><select id="bt">${['12:00','13:00','14:00','19:00','20:00','21:00'].map(t=>`<option>${t}</option>`).join('')}</select></div></div>
+ <label>Guests</label><select id="bg">${[1,2,3,4,5,6,8,10].map(n=>`<option>${n}</option>`).join('')}</select>
+ <label>Notes (optional)</label><input id="bn" placeholder="Birthday, window seat…">
+ <button class="p" style="width:100%" onclick="book()">Request booking</button></div>`}
+async function book(){const date=$('#bd').value;if(!date)return toast('Pick a date.');
+ try{await api('/bookings','POST',{branch:$('#bb').value,date,time:$('#bt').value,guests:+$('#bg').value,note:$('#bn').value.trim()});await refresh('orders');toast('Booking requested')}catch(e){toast(e.message)}}
+function vNear(){$('#v').innerHTML=`<div class="card row"><span><b>Branches near you</b><br><span class="mut">${loc?'Sorted by distance from your location.':'Share your location to sort by distance.'}</span></span><button class="p" onclick="locate()">Use my location</button></div>`+
+ brs().map(b=>`<div class="card row"><span><b>${b.n}</b> ${b.d!=null?`<span class="tag g">${b.d.toFixed(1)} km</span>`:''}<br><span class="mut">${b.a}, Hyderabad</span></span>
+ <a href="https://www.google.com/maps/search/?api=1&query=${b.la},${b.ln}" target="_blank" rel="noopener"><button>Open in Maps</button></a></div>`).join('')}
+function locate(){if(!navigator.geolocation)return toast('Location is not supported on this device.');
+ navigator.geolocation.getCurrentPosition(p=>{loc={la:p.coords.latitude,ln:p.coords.longitude};render()},()=>toast('Could not get your location. Allow location access and try again.'),{timeout:8000})}
+
+function vOrders(){const o=orders().filter(x=>x.uid===cur.id).reverse(),b=books().filter(x=>x.uid===cur.id).reverse();
+ $('#v').innerHTML='<h3 style="margin-top:0">My orders</h3>'+(o.length?o.map(x=>`<div class="card"><div class="row"><b>Order #${x.id}</b><span class="tag">${x.st}</span></div><div class="mut">${x.items.map(i=>i.q+'× '+esc(i.n)).join(', ')}</div><div class="row"><span class="mut">${fmt(x.t)} · ${esc(x.br)}</span><b>₹${x.total}</b></div>${x.m==='online'?(x.pay==='paid'?'<span class="tag g">Paid online</span>':`<div class="row"><span class="tag r">Payment pending</span><button class="p" onclick="payAgain(${x.id})">Pay now</button></div>`):'<span class="tag">Pay on delivery</span>'}</div>`).join(''):'<p class="mut">No orders yet. Add dishes from the menu.</p>')+
+ '<h3>My table bookings</h3>'+(b.length?b.map(x=>`<div class="card row"><span><b>#${x.id} ${esc(x.br)}</b><br><span class="mut">${x.date} at ${x.time} · ${x.g} guests</span></span><span class="tag ${x.st==='Confirmed'?'g':x.st==='Declined'?'r':''}">${x.st}</span></div>`).join(''):'<p class="mut">No bookings yet.</p>')}
+
+function vAlerts(){const l=mine(),had=l.some(n=>!n.read);
+ $('#v').innerHTML='<h3 style="margin-top:0">Notifications</h3>'+(l.length?l.map(n=>`<div class="card"><div>${esc(n.msg)}</div><div class="mut">${fmt(n.t)}</div></div>`).join(''):'<p class="mut">Nothing yet. Order updates and booking replies show up here.</p>');
+ const b=document.querySelector('.bell i');if(b)b.remove();
+ if(had){l.forEach(n=>n.read=true);api('/notifications/read','POST').catch(()=>{})}}
+function vAdmin(){const sub=[['orders','Orders'],['bookings','Bookings'],['menu','Dishes & menus'],['offers','Offers'],['reviews','Reviews'],['users','Users'],['send','Announce']];
+ let h=`<div class="row" style="justify-content:flex-start;margin-bottom:10px">${sub.map(s=>`<button class="${atab===s[0]?'on':''}" onclick="atab='${s[0]}';render()">${s[1]}</button>`).join('')}</div>`;
+ if(atab==='orders')h+=orders().slice().reverse().map(o=>`<div class="card"><div class="row"><b>#${o.id} ${esc(o.name)}</b><select style="width:auto;margin:0" onchange="setOrder(${o.id},this.value)">${ST.map(s=>`<option ${s===o.st?'selected':''}>${s}</option>`).join('')}</select></div>
+  <div class="mut">${o.items.map(i=>i.q+'× '+esc(i.n)).join(', ')}</div><div class="mut">${esc(o.addr)} · ${esc(o.ph)} · ${esc(o.br)} · ₹${o.total} · ${o.m==='online'?(o.pay==='paid'?'PAID online':'online payment '+o.pay):'cash on delivery'}</div></div>`).join('')||'<p class="mut">No orders yet.</p>';
+ if(atab==='bookings')h+=books().slice().reverse().map(b=>`<div class="card"><div class="row"><b>#${b.id} ${esc(b.name)} · ${b.g} guests</b><span class="tag">${b.st}</span></div><div class="mut">${esc(b.br)} · ${b.date} ${b.time}${b.note?' · '+esc(b.note):''}</div>
+  <div class="row" style="justify-content:flex-start;margin-top:6px"><button class="p" onclick="setBook(${b.id},'Confirmed')">Confirm</button><button class="d" onclick="setBook(${b.id},'Declined')">Decline</button><button onclick="doneBook(${b.id})">Mark visit finished</button></div></div>`).join('')||'<p class="mut">No bookings yet.</p>';
+ if(atab==='menu')h+=`<div class="card"><b>Menus</b><div class="row" style="justify-content:flex-start;margin:8px 0">${menus().map(n=>`<span class="tag">${esc(n)} <a href="#" onclick="delMenu('${n}');return false">✕</a></span>`).join('')}</div><div class="row"><input id="nmn" placeholder="New menu name, e.g. Weekend Special" style="flex:1;margin:0"><button class="p" onclick="addMenu()">Create menu</button></div></div><div class="card"><b>Add a dish</b><div class="row" style="align-items:flex-start"><div style="flex:2;min-width:140px"><label>Name</label><input id="mn"></div><div style="flex:1;min-width:90px"><label>Price ₹</label><input id="mp" type="number"></div></div>
+  <div class="row" style="align-items:flex-start"><div style="flex:1"><label>Menu</label><select id="mc">${menus().map(n=>`<option>${esc(n)}</option>`).join('')}</select></div><div style="flex:1"><label>Emoji</label><input id="me" value="🍽️"></div></div><label>Short description</label><input id="md" placeholder="Creamy, mildly spiced, served hot"><label>Ingredients</label><textarea id="mg" rows="2" placeholder="Chicken, butter, tomato, cream..."></textarea><label>How it is made</label><textarea id="mh" rows="3" placeholder="Marinate, grill, then simmer in gravy..."></textarea><label>Photo (optional)</label><input id="mi" type="file" accept="image/*"><button class="p" onclick="addDish()">Add dish</button></div>`+
+  menu().map(m=>`<div class="card row"><span>${m.e} <b>${esc(m.n)}</b> <span class="mut">${esc(m.c)} · ₹${m.p}</span></span><span><button onclick="editDish(${m.id})">Edit</button> <button onclick="togDish(${m.id})">${m.a?'Hide':'Show'}</button> <button class="d" onclick="delDish(${m.id})">Delete</button></span></div>`).join('');
+ if(atab==='offers')h+=`<div class="card"><b>Create special offer</b><label>Title</label><input id="ot" placeholder="Weekend Biryani Fest"><label>Description</label><input id="od" placeholder="Valid this weekend only"><label>Discount %</label><input id="op" type="number" min="1" max="90" value="20"><label>Dishes on offer</label><div>${menu().map(m=>`<label style="display:block;color:var(--tx);font-size:14px"><input type="checkbox" class="oc" value="${m.id}" style="width:auto;margin:0 6px 0 0">${m.e} ${esc(m.n)} (₹${m.p})</label>`).join('')}</div><button class="p" style="margin-top:10px;width:100%" onclick="addOffer()">Publish offer and notify customers</button><p class="mut">Customers get an in-app notification and an email automatically.</p></div>`+offers().slice().reverse().map(o=>`<div class="card row"><span><b>${esc(o.title)}</b> <span class="tag ${o.on?'g':''}">${o.on?'Live':'Paused'}</span><br><span class="mut">${o.pct}% off · ${o.ids.length} dishes</span></span><span><button onclick="togOffer(${o.id})">${o.on?'Pause':'Resume'}</button> <button class="d" onclick="delOffer(${o.id})">Delete</button></span></div>`).join('');
+ if(atab==='reviews')h+=revs().slice().reverse().map(x=>`<div class="card"><div class="row"><b>${esc(x.name)}</b><span class="mut">${fmt(x.t)}</span></div><div>Food ${'★'.repeat(x.f)} · Service ${'★'.repeat(x.s)} · <span class="mut">${esc(x.br)}</span></div><p class="mut">${esc(x.note||'')}</p><button class="d" onclick="delReview(${x.id})">Delete</button></div>`).join('')||'<p class="mut">No reviews yet.</p>';
+ if(atab==='users')h+=users().map(u=>`<div class="card row"><span><b>${esc(u.name)}</b> <span class="tag">${u.role}</span><br><span class="mut">${esc(u.email)}</span></span>${u.id===cur.id?'':`<span><button onclick="togRole(${u.id})">Make ${u.role==='admin'?'user':'admin'}</button> <button class="d" onclick="delUser(${u.id})">Remove</button></span>`}</div>`).join('');
+ if(atab==='send')h+=`<div class="card"><b>Announce to all customers</b><label>Message</label><textarea id="an" rows="3" placeholder="Weekend offer: 20% off biryani"></textarea><button class="p" onclick="announce()">Send notification</button></div>`;
+ $('#v').innerHTML=h}
+function setOrder(id,s){act(()=>api('/admin/orders/'+id,'PATCH',{status:s}),'Customer notified')}
+function setBook(id,s){act(()=>api('/admin/bookings/'+id,'PATCH',{status:s}),'Customer notified')}
+function addDishBase(img){const n=$('#mn').value.trim(),p=+$('#mp').value;if(!n||!p)return toast('Enter a dish name and price.');
+ act(()=>api('/admin/dishes','POST',{name:n,price:p,menu:$('#mc').value,emoji:$('#me').value||'🍽️',img,descr:$('#md').value.trim(),ingredients:$('#mg').value.trim(),method:$('#mh').value.trim()}),'Dish added')}
+function togDish(id){const m=menu().find(x=>x.id===id);act(()=>api('/admin/dishes/'+id,'PUT',{active:m.a?0:1}))}
+function delDish(id){act(()=>api('/admin/dishes/'+id,'DELETE'),'Dish deleted')}
+function togRole(id){act(()=>api('/admin/users/'+id+'/role','PATCH'))}
+function delUser(id){act(()=>api('/admin/users/'+id,'DELETE'))}
+function announce(){const m=$('#an').value.trim();if(!m)return toast('Write a message first.');act(()=>api('/admin/announce','POST',{message:m}),'Sent to all customers')}
+
+const info=m=>({d:m.d||'',i:m.i||'',h:m.h||''});
+function showDish(id){const m=menu().find(x=>x.id===id);if(!m)return;const f=info(m);$('#modal').innerHTML=`<div class="ov" onclick="if(event.target===this)closeAuth()"><div class="auth card" style="max-height:88vh;overflow:auto;padding:0"><div class="ph" style="height:170px">${m.img?`<img src="${m.img}" alt="${esc(m.n)}">`:`<span class="em">${m.e}</span>`}</div><div style="padding:16px"><div class="row"><b style="font-size:20px">${esc(m.n)}</b><button onclick="closeAuth()">✕</button></div><div class="pr">${priceTag(m)}</div><p>${esc(f.d||'No description added yet.')}</p><b>Ingredients</b><p class="mut" style="font-size:14px">${esc(f.i||'Not added yet.')}</p><b>How it is made</b><p class="mut" style="font-size:14px">${esc(f.h||'Not added yet.')}</p><button class="p" style="width:100%" onclick="closeAuth();chg(${m.id},1)">Add to cart</button></div></div></div>`}
+function editDish(id){const m=menu().find(x=>x.id===id),f=info(m);$('#modal').innerHTML=`<div class="ov" onclick="if(event.target===this)closeAuth()"><div class="auth card" style="max-height:90vh;overflow:auto"><div class="row"><b>Edit ${esc(m.n)}</b><button onclick="closeAuth()">✕</button></div><label>Name</label><input id="en" value="${esc(m.n)}"><label>Price ₹</label><input id="ep" type="number" value="${m.p}"><label>Short description</label><input id="ed" value="${esc(f.d||'')}"><label>Ingredients</label><textarea id="ei" rows="3">${esc(f.i||'')}</textarea><label>How it is made</label><textarea id="eh" rows="4">${esc(f.h||'')}</textarea><button class="p" style="width:100%" onclick="saveDish(${id})">Save changes</button></div></div>`}
+function saveDish(id){const n=$('#en').value.trim(),p=+$('#ep').value,d=$('#ed').value.trim(),i=$('#ei').value.trim(),h=$('#eh').value.trim();if(!n||!p)return toast('Enter a name and price.');closeAuth();act(()=>api('/admin/dishes/'+id,'PUT',{name:n,price:p,descr:d,ingredients:i,method:h}),'Dish updated')}
+const revs=()=>get('pf_reviews',[]);
+const ended=b=>b.st==='Confirmed'&&(b.done||Date.now()>new Date(b.date+'T'+b.time).getTime()+72e5);
+const canLike=()=>!!cur&&(books().some(b=>b.uid===cur.id&&ended(b))||orders().some(o=>o.uid===cur.id&&o.st==='Delivered'));
+const likeN=id=>(menu().find(m=>m.id===id)||{}).likes||0,liked=id=>!!cur&&get('pf_mylikes',[]).includes(id);
+async function like(id){if(!cur)return gate(()=>like(id));if(!canLike())return toast('Likes unlock after your table booking time is over.');
+ try{await api('/likes/'+id,'POST');await load();tab==='menu'?drawMenu():render()}catch(e){toast(e.message)}}
+function topRow(){const t=get('pf_top',[]).map(x=>({m:menu().find(m=>m.n===x.name&&m.a),q:x.qty})).filter(x=>x.m);
+ return t.length?`<h3 style="margin-top:0">🔥 Top ordered</h3><div class="top">${t.map(({m,q})=>`<div class="card dish tp" onclick="showDish(${m.id})"><div class="ph" style="height:84px">${m.img?`<img src="${m.img}" alt="${esc(m.n)}">`:`<span class="em">${m.e}</span>`}</div><div class="dt"><b>${esc(m.n)}</b><div class="mut">${q} ordered · ❤ ${likeN(m.id)}</div></div></div>`).join('')}</div>`:''}
+function doneBook(id){act(()=>api('/admin/bookings/'+id,'PATCH',{done:true}),'Visit marked finished')}
+function delReview(id){act(()=>api('/admin/reviews/'+id,'DELETE'))}
+function vReviews(){const r=revs().slice().reverse(),av=k=>r.length?(r.reduce((s,x)=>s+x[k],0)/r.length).toFixed(1):'-';
+ $('#v').innerHTML=`<h3 style="margin-top:0">Customer reviews</h3><div class="card row"><span>Food <b>★ ${av('f')}</b></span><span>Service <b>★ ${av('s')}</b></span><span class="mut">${r.length} reviews</span></div>`+(r.length?r.map(x=>`<div class="card"><div class="row"><b>${esc(x.name)}</b><span class="mut">${fmt(x.t)}</span></div><div>Food ${'★'.repeat(x.f)} · Service ${'★'.repeat(x.s)}</div><p class="mut">${esc(x.note||'')}</p><span class="tag">${esc(x.br)}</span></div>`).join(''):'<p class="mut">No reviews yet. Guests can review after their table booking time is over.</p>')}
+let rv={f:0,s:0},skipRv={};
+const stars=k=>[1,2,3,4,5].map(n=>`<button class="st${rv[k]>=n?' lit':''}" onclick="setStar('${k}',${n})">★</button>`).join('');
+function setStar(k,n){rv[k]=n;$('#st-'+k).innerHTML=stars(k)}
+function checkReview(){if(!cur||$('#modal').innerHTML)return;const b=books().find(x=>x.uid===cur.id&&ended(x)&&!x.rv&&!skipRv[x.id]);if(b)askReview(b)}
+function askReview(b){rv={f:0,s:0};$('#modal').innerHTML=`<div class="ov"><div class="auth card" style="max-height:90vh;overflow:auto"><b style="font-size:18px">How was your visit?</b><p class="mut">${esc(b.br)} · ${b.date} ${b.time}. Tell us about the food and how we served you.</p><label>Food</label><div id="st-f">${stars('f')}</div><label>Service (how we looked after you)</label><div id="st-s">${stars('s')}</div><label>Your review</label><textarea id="rn" rows="3" placeholder="What did you eat? How was the service?"></textarea><button class="p" style="width:100%" onclick="sendReview(${b.id})">Submit review</button><button style="width:100%;margin-top:8px" onclick="skipRv[${b.id}]=1;closeAuth()">Maybe later</button></div></div>`}
+async function sendReview(id){if(!rv.f||!rv.s)return toast('Please rate both food and service.');const note=$('#rn').value.trim();
+ try{await api('/reviews','POST',{booking_id:id,food:rv.f,service:rv.s,note});closeAuth();await refresh();toast('Thanks for your review')}catch(e){toast(e.message)}}
+setInterval(()=>{try{checkReview()}catch(e){}},30000);
+let LP=null;
+function bump(){const f=$('#fabn');if(f){f.textContent=cartCount();const b=f.parentElement;b.classList.remove('pop');void b.offsetWidth;b.classList.add('pop')}}
+function fly(){const f=document.querySelector('.fab');if(!f||!LP)return;const r=f.getBoundingClientRect(),d=document.createElement('div');d.className='fly';d.textContent='🍽️';d.style.left=LP.x+'px';d.style.top=LP.y+'px';document.body.appendChild(d);requestAnimationFrame(()=>{d.style.transform='translate('+(r.left+r.width/2-LP.x)+'px,'+(r.top+r.height/2-LP.y)+'px) scale(.3)';d.style.opacity='.25'});setTimeout(()=>d.remove(),750)}
+document.addEventListener('pointerdown',e=>{LP={x:e.clientX,y:e.clientY};const b=e.target.closest('button');if(!b||b.matches('.fab,.bell'))return;const r=b.getBoundingClientRect(),s=Math.max(r.width,r.height)*2,d=document.createElement('span');d.className='rip';d.style.cssText='width:'+s+'px;height:'+s+'px;left:'+(e.clientX-r.left-s/2)+'px;top:'+(e.clientY-r.top-s/2)+'px';b.appendChild(d);setTimeout(()=>d.remove(),650);try{navigator.vibrate&&navigator.vibrate(8)}catch(x){}});
+
+const sig=()=>JSON.stringify([DB.pf_orders,DB.pf_book,DB.pf_notes,DB.pf_offers,DB.pf_menu,DB.pf_reviews]);
+async function poll(){if(document.hidden)return;try{const b=sig(),u=cur?unread():0;await load();if(cur&&unread()>u)toast('New notification');const a=document.activeElement;if(sig()!==b&&!$('#modal').innerHTML&&!(a&&a.matches&&a.matches('input,textarea,select')))render()}catch(e){}}
+setInterval(poll,15000);
+(async()=>{try{if(TOKEN){cur=(await api('/me')).user}}catch(e){cur=null}try{await load()}catch(e){toast('Cannot reach the server')}render()})();</script></body></html>

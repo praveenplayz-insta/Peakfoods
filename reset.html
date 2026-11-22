@@ -1,0 +1,15 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Reset password - PeakFoods</title>
+<style>body{font-family:system-ui,sans-serif;background:#f4f7fb;display:flex;justify-content:center;padding:40px 16px;color:#10213a}
+.c{background:#fff;border:1px solid #dde4ee;border-radius:14px;padding:22px;width:100%;max-width:380px}
+h2 b{color:#f2a100}input,button{width:100%;padding:11px;margin:6px 0 12px;border-radius:10px;border:1px solid #dde4ee;font:inherit}
+button{background:#f2a100;border:0;font-weight:700;cursor:pointer}#m{font-size:14px}</style></head><body>
+<div class="c"><h2>Peak<b>Foods</b></h2><h3>Choose a new password</h3>
+<input id="p" type="password" placeholder="New password (8+ characters)"><input id="p2" type="password" placeholder="Repeat new password">
+<button onclick="go()">Save new password</button><div id="m"></div>
+<p><a href="/">Back to PeakFoods</a></p></div>
+<script>
+const token=new URLSearchParams(location.search).get('token'),m=document.getElementById('m');
+async function go(){const a=p.value;if(a.length<8)return m.textContent='Use at least 8 characters.';if(a!==p2.value)return m.textContent='Passwords do not match.';
+ const r=await fetch('/api/auth/reset',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({token,password:a})});
+ const d=await r.json();m.textContent=r.ok?'Password changed. You can log in now.':(d.error||'Something went wrong');}
+</script></body></html>
